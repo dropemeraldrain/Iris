@@ -17,13 +17,13 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '25'
-        distribution: 'temurin' # Сменили на самый стабильный дистрибутив
+        distribution: 'temurin'
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4 # Этот шаг принудительно настроит окружение Gradle под Java 25
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build -x test
+      run: ./gradlew build -x test --parallel
