@@ -19,6 +19,11 @@ jobs:
         java-version: '25'
         distribution: 'temurin'
 
+    - name: Force Update Lombok Version for Java 25 Compatibility
+      run: |
+        find . -name "build.gradle" -o -name "build.gradle.kts" | xargs sed -i 's/lombok:1.18.[0-9]*/lombok:1.18.36/g' || true
+        find . -name "build.gradle" -o -name "build.gradle.kts" | xargs sed -i 's/lombok:version=[^\n]*/lombok:version=1.18.36/g' || true
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
@@ -26,4 +31,4 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build -x test --parallel -Dorg.gradle.jvmargs="-Dlombok.anyConstructor.suppressConstructorProperties=true"
+      run: ./gradlew build -x test --parallel
