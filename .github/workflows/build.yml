@@ -13,22 +13,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 25
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '25'
+        java-version: '17' # Возвращаем родную для этого кода Java 17
         distribution: 'temurin'
-
-    - name: Force Update Lombok Version for Java 25 Compatibility
-      run: |
-        find . -name "build.gradle" -o -name "build.gradle.kts" | xargs sed -i 's/lombok:1.18.[0-9]*/lombok:1.18.36/g' || true
-        find . -name "build.gradle" -o -name "build.gradle.kts" | xargs sed -i 's/lombok:version=[^\n]*/lombok:version=1.18.36/g' || true
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.5' # Принудительно ставим стабильный Gradle, который не требует Java 25
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build -x test --parallel
+      run: gradle build -x test --parallel # Запускаем через глобальный gradle 8.5 вместо локального gradlew
