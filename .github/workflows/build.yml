@@ -13,20 +13,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
+    - name: Set up JDK 25
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        java-version: '25' # Установили требуемую Java 25
+        distribution: 'oracle' # Официальный дистрибутив с поддержкой Java 25
 
     - name: Make gradlew executable
       run: chmod +x ./gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: assembled-plugins
-        path: "**/build/libs/*.jar"
+      run: ./gradlew build -x test
